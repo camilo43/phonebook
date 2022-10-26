@@ -1,0 +1,24 @@
+
+ export const FilteredList = (props) => { 
+    let persons = props.persons
+    let filteredNames = props.filterNames
+
+    let results = persons.filter((e)=> { return e.name === filteredNames})
+    console.log("RESULTS",results)
+    
+    return <form onSubmit={props.onSubmitFilter}>
+            <input
+              value={props.filterNames}
+              onChange={props.onChangeFilter}
+            />
+            <p>Results from your contact list:</p>
+            <ul>
+                {results.map((e,i) => {
+                    if(results){
+                        return <li key={i}>{filteredNames} {e.number}</li>
+                    }               
+                    }) 
+                }            
+            </ul>
+        </form>    
+  }

@@ -37,7 +37,7 @@ const persons = [
     }
   ]
 
-app.get('/api/people', (req, res)=> {
+app.get('/', (req, res)=> {
    res.json(persons)
 })
 

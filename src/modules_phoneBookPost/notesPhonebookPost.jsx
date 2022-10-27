@@ -3,7 +3,7 @@ import axios from "axios";
 const url = 'http://localhost:3001'
 
 const getting = () => {
-    const axiosBase = axios.get(`${url}/`)
+    const axiosBase = axios.get(`${url}/api/data`)
     return axiosBase.then(resolve=> resolve.data)
 }
 

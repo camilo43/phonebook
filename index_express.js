@@ -38,7 +38,7 @@ const persons = [
     }
   ]
 
-app.get('/', (req, res)=> {
+app.get('/api/data', (req, res)=> {
   console.log("ALGO")
    res.json(persons)
 })

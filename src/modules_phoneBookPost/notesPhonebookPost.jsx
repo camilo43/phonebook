@@ -1,24 +1,24 @@
 import axios from "axios";
 
-const url = 'http://localhost:3001'
+const url = '/api'
 
 const getting = () => {
-    const axiosBase = axios.get(`${url}/api/data`)
+    const axiosBase = axios.get(`${url}/data`)
     return axiosBase.then(resolve=> resolve.data)
 }
 
 const posting = (objectBase) => {
-    const axiosBase = axios.post(`${url}/api/post`, objectBase)
+    const axiosBase = axios.post(`${url}/post`, objectBase)
     return axiosBase.then(resolve => resolve.data)
 }
 
 const deleting = (id) => {
-    const axiosBase = axios.delete(`${url}/api/people/${id}`)
+    const axiosBase = axios.delete(`${url}/people/${id}`)
     return axiosBase
 }
 
 const putting = (id, cambio) => {
-    const axiosBase = axios.put(`${url}/api/people/${id}`, cambio)
+    const axiosBase = axios.put(`${url}/people/${id}`, cambio)
     return axiosBase
 }
 const notesPhonebook = { getting, posting, deleting, putting }

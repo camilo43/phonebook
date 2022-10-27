@@ -3,6 +3,7 @@ import cors from 'cors'
 
 const app = express()
 app.use(cors())
+app.use(express.static('build'))
 
 const persons = [
     {
@@ -41,7 +42,3 @@ app.get('/', (req, res)=> {
    res.json(persons)
 })
 
-const port = process.env.PORT || 3001
-app.listen(port, () => {
-console.log(`Server running on port ${port}`)
-})

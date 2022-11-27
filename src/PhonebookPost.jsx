@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import  {notesPhonebook} from './axios_phoneBookPost/notesPhonebookPost'
+import { PersonForm } from './componentsPhonebook/PersonForm'
+import { useEffect, useState } from 'react'
 import { FilteredList } from './componentsPhonebook/FilteredList'
 import { ListPeople } from './componentsPhonebook/ListPeople'
-import { PersonForm } from './componentsPhonebook/PersonForm'
-import notesPhonebook from './modules_phoneBookPost/notesPhonebookPost'
 
 export const PhonebookPost = () => {
  
@@ -41,17 +40,16 @@ export const PhonebookPost = () => {
   const [ notificationAdd, setNotificationAdd] = useState("")
   const [ stylesGreen, setStylesGreen] = useState({})
   const [ stylesRed, setStylesRed] = useState({})
-
+ 
   const onChangeEventName = (event) => {
     setNewName(() => event.target.value)  
   }
   const onChangeEventNumber = (event) => {
-    setNewNumber(()=> event.target.value)  
+    setNewNumber(()=> event.target.value)
   }
   const onChangeFilter = (event) =>{
     setFilterNames(()=> event.target.value)   
   }
-
   const onSubmitFilter = (event) => {
     event.preventDefault();
   }
@@ -67,13 +65,13 @@ export const PhonebookPost = () => {
     if(filtroGente.length>0){
         if(window.confirm(`${newName} is already in the list, do you want to update the old number?`)){           
             setNewName(()=> ""); setNewNumber(()=> "")
-            notesPhonebook.putting(filtroGente[0].id, addPersons)
-              .catch(()=>{
-                setStylesRed(stylesError)
-                setNotificationError(`${newName} has been deleted from the database`)
-                setTimeout(()=> setNotificationError(""), 5000)
-                setTimeout(()=> setStylesRed({}), 5000)
-              })
+            notesPhonebook.putting(filtroGente[0]._id, addPersons)
+            setStylesGreen(stylesNotification)
+            setNotificationAdd(`Contact: '${newName}' has been updated`)
+            setTimeout(()=> setStylesGreen({}), 5000)
+            setTimeout(()=> setNotificationAdd(""), 5000)
+            setNewName(()=> "")
+            setNewNumber(()=> "")
         } else {
             setNewName(()=> ""); setNewNumber(()=> "")
         }
@@ -97,16 +95,19 @@ export const PhonebookPost = () => {
         name: newName,
         number: newNumber,
     }
-
     filteredNames(addPersons)
-    
     }
 
-  const deleteContact = (id) =>{      
+  const deleteContact = (id, name) =>{
+     const filteredPersons = persons.filter(e=> e._id !== id)
      notesPhonebook.deleting(id)
-     setPersons(persons.filter(e=> e.id !== id))
-  }
-    
+     setPersons(filteredPersons) 
+      setStylesRed(stylesError)
+      setNotificationError(`${name} has been deleted from the database`)
+      setTimeout(()=> setNotificationError(""), 5000)
+      setTimeout(()=> setStylesRed({}), 5000)
+    }
+      
   return (
     <div style={mainStyle}>
       <h1>Phonebook</h1>

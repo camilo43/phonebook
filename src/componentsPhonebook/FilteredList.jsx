@@ -4,7 +4,6 @@
     let filteredNames = props.filterNames
 
     let results = persons.filter((e)=> { return e.name === filteredNames})
-    console.log("RESULTS",results)
     
     return <form onSubmit={props.onSubmitFilter}>
             <input

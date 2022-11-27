@@ -1,31 +1,17 @@
-
-// ***** WITHOUT POST *****
-
-import e from "cors"
-
-  // export const ListPeople = (props) => {     
-  //   return <ul>
-  //     {(props.arrayes).map((e,i)=><li key={i}>{e.name} - {e.number}</li>)}
-  //   </ul>
-  // }
-
-//****** WITH POST ******
-
-  export const ListPeople = (props) => {
-    const confirmation = (nameDelete, idDelete) => {      
-      if(window.confirm(`Do you want to delete ${nameDelete}`)){props.deleteContact(idDelete)} 
-    }
-    return <form onSubmit={confirmation}>
+  export const ListPeople = (props) => {    
+    return <form>
         <ul>
           {(props.arrayes).map((e,i)=>{
-            return <li key={i}>{e.name} - {e.number}
+            return <li key={i}> {e.name} - {e.number}
               <br></br>
-          <button type="submit" onClick={(f)=> {
-                f.preventDefault();
-                confirmation(e.name, e.id)
-                }
-              } 
-                >Delete</button>
+                <button 
+                  type="submit" onClick={(f)=> {
+                      f.preventDefault();
+                      if(window.confirm(`Do you want to delete ${e.name} ID number ${e._id}?`)){props.deleteContact(e._id, e.name)}
+                      }
+                    } 
+                >Delete
+                </button>
               <br></br>
               <br></br>
             </li>

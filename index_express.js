@@ -21,7 +21,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 connectDB();
 
-
 app.get('/api/data', expressAsyncHandler(async (req,res,next)=>{  
   const searchContacts = await Book.find()
   try{

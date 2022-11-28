@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = '/api'
+const url = 'http://localhost:3002/api'
 
 const getting = () => {   
     const axiosBase = axios.get(`${url}/data`)

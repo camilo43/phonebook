@@ -23,7 +23,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "PORT=3002 react-scripts start",
+    "start": "react-scripts start",
     "start2": "node index_express.js",
     "build": "react-scripts build",
     "test": "react-scripts test",

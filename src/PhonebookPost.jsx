@@ -55,6 +55,7 @@ export const PhonebookPost = () => {
   }
 
   useEffect(() => {
+    console.log(".....useEffect getting().....")
     notesPhonebook.getting()
         .then(response=> {setPersons(response)})  
   }, [newNumber])

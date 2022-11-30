@@ -2,7 +2,8 @@ import axios from "axios";
 
 const url = '/api'
 
-const getting = () => {   
+const getting = () => { 
+    console.log(">>Getting AXIOS")  
     const axiosBase = axios.get(`${url}/data`)
     return axiosBase.then(resolve=> resolve.data)
 }

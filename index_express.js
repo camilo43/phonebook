@@ -12,6 +12,7 @@ const require = createRequire(import.meta.url);
 const dotenv = require('dotenv').config()
 const cors = require('cors')
 const app = express()
+
 app.use(express.json())
 
 // app.use(express.static('build'))

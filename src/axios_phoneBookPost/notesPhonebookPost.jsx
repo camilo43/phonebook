@@ -1,12 +1,12 @@
 import axios from "axios";
 
-const url = 'https://helpful-cat-c6e7cf.netlify.app/api'
+const url = '/api'
 
 const getting = () => { 
     console.log(">>Getting AXIOS")  
     const axiosBase = axios.get(`${url}/data`)
     console.log("AxiosBase", axiosBase)
-    return axiosBase.then(resolve=> {console.log("RESOLVE", resolve); return resolve.data})
+    return axiosBase.then(resolve=> {console.log("RESOLVE", resolve); return JSON.stringify(resolve.data)})
 }
 
 const posting = (objectBase) => {

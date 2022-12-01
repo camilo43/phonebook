@@ -41,6 +41,7 @@ export const PhonebookPost = () => {
   const [ stylesGreen, setStylesGreen] = useState({})
   const [ stylesRed, setStylesRed] = useState({})
  
+  console.log("///////PERSONS/////////", persons)
   const onChangeEventName = (event) => {
     setNewName(() => event.target.value)  
   }

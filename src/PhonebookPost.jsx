@@ -54,9 +54,9 @@ export const PhonebookPost = () => {
     event.preventDefault();
   }
 
-  let results = () => {fetch("/.netlify/functions/getPersons.js").then(response=> response.json());}
+  // let results = () => {fetch("/.netlify/functions/getPersons.js").then(response=> response.json());}
 
-  console.log("RESULTS", results())
+  // console.log("RESULTS", results())
 
   useEffect(() => {
     console.log(".....useEffect getting().....") 

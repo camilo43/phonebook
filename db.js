@@ -16,6 +16,7 @@ export const connectDB = async() => {
     }
 }
 
+
 const port = 3010
 app.listen(port, () => {
 console.log(`SERVIDOR DB running on port ${port}`)

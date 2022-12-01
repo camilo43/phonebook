@@ -40,8 +40,7 @@ export const PhonebookPost = () => {
   const [ notificationAdd, setNotificationAdd] = useState("")
   const [ stylesGreen, setStylesGreen] = useState({})
   const [ stylesRed, setStylesRed] = useState({})
- 
-  console.log("///////PERSONS/////////", persons)
+
   const onChangeEventName = (event) => {
     setNewName(() => event.target.value)  
   }
@@ -55,8 +54,12 @@ export const PhonebookPost = () => {
     event.preventDefault();
   }
 
+  let results = () => {fetch("/.netlify/functions/getPersons.js").then(response=> response.json());}
+
+  console.log("RESULTS", results())
+
   useEffect(() => {
-    console.log(".....useEffect getting().....")
+    console.log(".....useEffect getting().....") 
     notesPhonebook.getting()
         .then(response=> {setPersons(response)})  
   }, [newNumber])

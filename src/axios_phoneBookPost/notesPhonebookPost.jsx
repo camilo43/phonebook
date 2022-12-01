@@ -2,18 +2,11 @@ import axios from "axios";
 
 const url = '/api'
 
-const getting = async() => { 
-    console.log(">>Getting AXIOS")
-    try{
-        const axiosBase = axios.get(`${url}/data`)
-        console.log("AxiosBase", axiosBase)
-        const resolve = await axiosBase;
-        console.log("RESOLVE", resolve);
-        return resolve.data;
-    } catch(error){
-        console.log("THIS IS THE ERROR: ", error)
-    } 
-   
+const getting = () => { 
+    console.log(">>Getting AXIOS")  
+    const axiosBase = axios.get(`${url}/data`)
+    console.log("AxiosBase", axiosBase)
+    return axiosBase.then(resolve=> {console.log("RESOLVE", resolve); return resolve.data})
 }
 
 const posting = (objectBase) => {

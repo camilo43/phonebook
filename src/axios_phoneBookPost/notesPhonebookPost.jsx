@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = '/api'
+const url = 'https://helpful-cat-c6e7cf.netlify.app/api'
 
 const getting = () => { 
     console.log(">>Getting AXIOS")  

@@ -6,7 +6,7 @@ const getting = () => {
     console.log(">>Getting AXIOS")  
     const axiosBase = axios.get(`${url}/data`)
     console.log("AxiosBase", axiosBase)
-    return axiosBase.then(resolve=> {console.log("RESOLVE", resolve); return JSON.stringify(resolve.data)})
+    return axiosBase.then(resolve=> {console.log("RESOLVE", resolve); return resolve.data})
 }
 
 const posting = (objectBase) => {

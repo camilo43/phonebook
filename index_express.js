@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 connectDB();
 
-app.get('/*', expressAsyncHandler(async (req,res,next)=>{  
+app.get('/api/data', expressAsyncHandler(async (req,res,next)=>{  
   console.log("///Getting EXPRESS")
   const searchContacts = await Book.find()
   try{

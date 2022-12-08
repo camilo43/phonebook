@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "notesPhone": "nodemon frontend/phonebookModel.js",
+    "build": "react-scripts build",
     "start": "node backend/index_express.js",
     "server": "nodemon backend/index_express.js",
     "client": "npm start --prefix frontend",

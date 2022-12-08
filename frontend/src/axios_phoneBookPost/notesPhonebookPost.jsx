@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = 'http://localhost:3001/'
+const url = 'https://example-backend2.onrender.com/'
 
 const getting = () => { 
     console.log(">>Getting AXIOS")  

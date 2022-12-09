@@ -66,7 +66,7 @@ export const PhonebookPost = () => {
 
   const filteredNames = (addPersons) => {
     const filtroGente = persons.filter(e=> e.name === newName)
-
+    console.log("FILTRO GENTE", filtroGente)
     if(filtroGente.length>0){
         if(window.confirm(`${newName} is already in the list, do you want to update the old number?`)){           
             setNewName(()=> ""); setNewNumber(()=> "")

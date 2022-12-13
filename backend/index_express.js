@@ -37,7 +37,6 @@ app.get('/api/data', expressAsyncHandler(async (req,res,next)=>{
  }))
 
 app.post('/api/data', expressAsyncHandler(async (req,res,next)=>{ 
-
   if(!req.body.name){
     res.status(400)
     throw new Error('Please add a text field')
@@ -55,7 +54,6 @@ app.put('/api/data/:id', expressAsyncHandler(async(req,res,next)=>{
     res.status(400)
     throw new Error('The contact was not found')
   }
-
   const updatedContact = await Book.findByIdAndUpdate(req.params.id, req.body, {new:true})
   res.status(200).json(updatedContact).catch(error => next(error))
 }))

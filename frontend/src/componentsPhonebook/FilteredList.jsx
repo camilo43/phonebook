@@ -8,7 +8,7 @@
     return <form onSubmit={props.onSubmitFilter}>
             <input
               value={props.filterNames}
-              onChange={props.onChangeFilter}
+              onChange={props.onSubmitForm}
             />
             <p>Results from your contact list:</p>
             <ul>

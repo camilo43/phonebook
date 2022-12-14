@@ -40,6 +40,7 @@ export const PhonebookPost = () => {
   const [ notificationAdd, setNotificationAdd] = useState("")
   const [ stylesGreen, setStylesGreen] = useState({})
   const [ stylesRed, setStylesRed] = useState({})
+  const [ boolean, setBoolean] = useState(false)
 
   const onChangeEventName = (event) => {
     setNewName(() => event.target.value)  
@@ -50,33 +51,31 @@ export const PhonebookPost = () => {
   const onChangeFilter = (event) =>{
     setFilterNames(()=> event.target.value)   
   }
-  const onSubmitFilter = (event) => {
-    event.preventDefault();
-  }
+  // const onSubmitFilter = (event) => {
+  //   event.preventDefault();
+  // }  
+  const addPersons = {
+    name: newName,
+    number: newNumber,
+}
 
-  // let results = () => {fetch("/.netlify/functions/getPersons.js").then(response=> response.json());}
-
-  // console.log("RESULTS", results())
-
-  useEffect(() => {
-    console.log(".....useEffect getting().....") 
-    notesPhonebook.getting()
-        .then(response=> {setPersons(response)}) 
-  }, [newNumber])
-
-  const filteredNames = (addPersons) => {
-    const filtroGente = persons.filter(e=> e.name === newName)
-    console.log("FILTRO GENTE", filtroGente)
-    if(filtroGente.length>0){
-        if(window.confirm(`${newName} is already in the list, do you want to update the old number?`)){           
-            setNewName(()=> ""); setNewNumber(()=> "")
-            notesPhonebook.putting(filtroGente[0]._id, addPersons)
+  let exampleFilter = persons.filter(e=> e.name === newName)
+  const filteredNames = (addPersons) => { 
+    if(exampleFilter.length>0){      
+            if(window.confirm(`${newName} is already in the list, do you want to update the old number?`)){
+            //notesPhonebook.putting(filtroGente[0]._id, addPersons)
+            notesPhonebook.putting(exampleFilter[0]._id, addPersons)
+            // notesPhonebook.getting()
+            // .then(response=> {setPersons(response)})
             setStylesGreen(stylesNotification)
             setNotificationAdd(`Contact: '${newName}' has been updated`)
             setTimeout(()=> setStylesGreen({}), 5000)
             setTimeout(()=> setNotificationAdd(""), 5000)
-            setNewName(()=> "")
+            setNewName(()=> ""); 
             setNewNumber(()=> "")
+            exampleFilter = null
+            console.log("BOOLEAN<<<1", boolean)
+            
         } else {
             setNewName(()=> ""); setNewNumber(()=> "")
         }
@@ -91,17 +90,21 @@ export const PhonebookPost = () => {
             setTimeout(()=> setNotificationAdd(""), 5000)
             setNewName(()=> "")
             setNewNumber(()=> "")
+            
         })
     }}
 
   const onSubmitForm = (event) => {
     event.preventDefault();
-    const addPersons = {
-        name: newName,
-        number: newNumber,
-    }
     filteredNames(addPersons)
+    setTimeout(()=> setBoolean(!boolean), 500)
     }
+
+  useEffect(() => {
+    console.count()
+    notesPhonebook.getting()
+        .then(response=> {setPersons(response)})
+  }, [boolean])
 
   const deleteContact = (id, name) =>{
      const filteredPersons = persons.filter(e=> e._id !== id)
@@ -122,7 +125,7 @@ export const PhonebookPost = () => {
       <FilteredList 
         persons={persons} 
         filterNames={filterNames} 
-        onSubmitFilter={onSubmitFilter}
+        onSubmitForm={onSubmitForm}
         onChangeFilter={onChangeFilter}
         />
       

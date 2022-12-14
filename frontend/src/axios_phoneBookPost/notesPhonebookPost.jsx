@@ -5,7 +5,6 @@ const url = 'https://example-backend2.onrender.com/'
 const getting = () => { 
     console.log(">>Getting AXIOS")  
     const axiosBase = axios.get(`${url}api/data`)
-    axiosBase.then(resolve=> console.log(">>RESOLVE", resolve))
     return  axiosBase.then(resolve=>resolve.data)
 }
 
@@ -20,6 +19,7 @@ const deleting = (id) => {
 }
 
 const putting = (id, cambio) => {
+    console.log(">>PUTTING AXIOS")
     const axiosBase = axios.put(`${url}api/data/${id}`, cambio)
     return axiosBase
 }

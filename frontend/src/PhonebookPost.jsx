@@ -60,14 +60,17 @@ export const PhonebookPost = () => {
 }
 
   let exampleFilter = persons.filter(e=> e.name === newName)
-  const filteredNames = (addPersons) => { 
+  const filteredNames = async (addPersons) => { 
     if(exampleFilter.length>0){      
             if(window.confirm(`${newName} is already in the list, do you want to update the old number?`)){
             //notesPhonebook.putting(filtroGente[0]._id, addPersons)
-            notesPhonebook.putting(exampleFilter[0]._id, addPersons)
+            await notesPhonebook.putting(exampleFilter[0]._id, addPersons)
             // notesPhonebook.getting()
             // .then(response=> {setPersons(response)})
             setStylesGreen(stylesNotification)
+            setBoolean(!boolean)
+            console.log("PERSONS", persons)
+            // setTimeout(()=> setBoolean(!boolean), 500)
             setNotificationAdd(`Contact: '${newName}' has been updated`)
             setTimeout(()=> setStylesGreen({}), 5000)
             setTimeout(()=> setNotificationAdd(""), 5000)
@@ -97,13 +100,13 @@ export const PhonebookPost = () => {
   const onSubmitForm = (event) => {
     event.preventDefault();
     filteredNames(addPersons)
-    setTimeout(()=> setBoolean(!boolean), 500)
     }
 
   useEffect(() => {
     console.count()
     notesPhonebook.getting()
         .then(response=> {setPersons(response)})
+        console.log("PERSONS", persons)
   }, [boolean])
 
   const deleteContact = (id, name) =>{

@@ -36,17 +36,24 @@ app.get('/api/data', expressAsyncHandler(async (req,res,next)=>{
   }  
  }))
 
-app.post('/api/data', expressAsyncHandler(async (req,res,next)=>{ 
-  if(!req.body.name){
-    res.status(400)
-    throw new Error('Please add a text field')
-  }
-
-  const entrance = await Book.create({
+app.post('/api/data', expressAsyncHandler(async (req,res,next)=>{   
+   const entrance = await Book.create({
     name: req.body.name,
     number: req.body.number
   })
-  res.status(200).json(entrance).catch(error => next(error)) 
+  let emptyFields = [];
+
+  if(!req.body.name){
+    emptyFields.push("Name")
+  }
+  if(!req.body.number){
+    emptyFields.push("Number")
+  }
+  if(emptyFields > 0){    
+    return res.status(400).json({error: 'Please add a text field', emptyFields})
+  }
+  console.log('>>>>>>>>>>>>>EMPTY FIELDS', emptyFields)
+  res.status(200).json(entrance) 
 }))
 
 app.put('/api/data/:id', expressAsyncHandler(async(req,res,next)=>{
@@ -86,5 +93,5 @@ app.use(unknownEndpoint)
 const port = process.env.PORT || 3001
 
 app.listen(port, () => {
-console.log(`SERVER running on port ${port}`)
+console.log(`SERVER-EXPRESS running on port ${port}`)
 })

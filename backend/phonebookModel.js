@@ -6,8 +6,9 @@ const app = express()
 
 const phonebookSchema = new mongoose.Schema({
     name:{
-        type: String,
-        required: [true, 'Please add a text value']
+        type: String,        
+        required: [true, 'Please add a text value'],
+        minLength: [3, 'Name should be longer than 3 characters'] 
     },
     number:{
         type: String,

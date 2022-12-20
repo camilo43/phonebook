@@ -1,7 +1,13 @@
 import axios from "axios";
+import {toast} from "react-toastify"
 
 const url = 'https://example-backend2.onrender.com/'
 
+// axios.interceptors.request.use(undefined, (error)=>{
+//     if(error.message === "Request failed with status code 400" || error.message === `can't access property "data", resolve is undefined`){
+//         toast.error("Please add a name")
+//     }
+// })
 const getting = () => { 
     console.log(">>Getting AXIOS")  
     const axiosBase = axios.get(`${url}api/data`)
@@ -10,7 +16,8 @@ const getting = () => {
 
 const posting = (objectBase) => {
     const axiosBase = axios.post(`${url}api/data`, objectBase)
-    return axiosBase.then(resolve => resolve.data)
+    const validation = axiosBase.then(resolve => resolve.data)
+    return validation
 }
 
 const deleting = (id) => {

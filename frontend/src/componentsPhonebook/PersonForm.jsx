@@ -1,15 +1,16 @@
 export const PersonForm = (props) => {
+  
   return <form onSubmit={props.onSubmitForm}>    
         <div>
-          Name: <input 
-            placeholder="Contact's name"
+          Contact's name: <input 
+            placeholder="Type the name"
             value={props.newName}
             onChange={props.onChangeEventName}            
             />
             <br></br>
             <br></br>
-            Number: <input 
-              placeholder='Type the mobile number'
+            Phone number: <input 
+              placeholder='04X - XXX - XXXX'
               value={props.newNumber}
               onChange={props.onChangeEventNumber}
             />

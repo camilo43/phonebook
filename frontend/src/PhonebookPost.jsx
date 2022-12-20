@@ -41,6 +41,8 @@ export const PhonebookPost = () => {
   const [ stylesGreen, setStylesGreen] = useState({})
   const [ stylesRed, setStylesRed] = useState({})
   const [ boolean, setBoolean] = useState(false)
+  const [emptyFields, setEmptyFields] = useState([])
+  const [error, setError] = useState(null)
 
   const onChangeEventName = (event) => {
     setNewName(() => event.target.value)  
@@ -59,47 +61,100 @@ export const PhonebookPost = () => {
     number: newNumber,
 }
 
-  let exampleFilter = persons.filter(e=> e.name === newName)
-  const filteredNames = async (addPersons) => { 
-    if(exampleFilter.length>0){      
-            if(window.confirm(`${newName} is already in the list, do you want to update the old number?`)){
-            //notesPhonebook.putting(filtroGente[0]._id, addPersons)
-            await notesPhonebook.putting(exampleFilter[0]._id, addPersons)
-            // notesPhonebook.getting()
-            // .then(response=> {setPersons(response)})
-            setStylesGreen(stylesNotification)
-            setBoolean(!boolean)
-            console.log("PERSONS", persons)
-            // setTimeout(()=> setBoolean(!boolean), 500)
-            setNotificationAdd(`Contact: '${newName}' has been updated`)
-            setTimeout(()=> setStylesGreen({}), 5000)
-            setTimeout(()=> setNotificationAdd(""), 5000)
-            setNewName(()=> ""); 
-            setNewNumber(()=> "")
-            exampleFilter = null
-            console.log("BOOLEAN<<<1", boolean)
-            
-        } else {
-            setNewName(()=> ""); setNewNumber(()=> "")
-        }
-        
-    }else{
-        notesPhonebook.posting(addPersons)
-        .then(resolve => {
-            setPersons(()=> persons.concat(resolve))
-            setStylesGreen(stylesNotification)
-            setNotificationAdd(`New contact: '${newName}' has been added`)
-            setTimeout(()=> setStylesGreen({}), 5000)
-            setTimeout(()=> setNotificationAdd(""), 5000)
-            setNewName(()=> "")
-            setNewNumber(()=> "")
-            
-        })
-    }}
+const timerBannerRed = () => {  
+  setTimeout(()=> setStylesRed({}), 5000)  
+  setTimeout(()=> setNotificationError(""), 5000)
+}
+const timerBannerGreen = () => {  
+  setTimeout(()=> setStylesGreen({}), 5000)
+  setTimeout(()=> setNotificationAdd(""), 5000)
+}
 
-  const onSubmitForm = (event) => {
-    event.preventDefault();
-    filteredNames(addPersons)
+const clearTextBox  = () => {
+    setNewName(()=> ""); 
+    setNewNumber(()=> "")
+}
+let exampleFilter = persons.filter(e=> e.name === newName)
+
+  // let exampleFilter = persons.filter(e=> e.name === newName)  
+  // const filteredNames = async (addPersons) => { 
+  // //   if(exampleFilter===undefined || newName===""){
+  // //   setStylesRed(stylesError)
+  // //   setNotificationError(`Please type a name`)
+  // //   timerBannerRed()
+  // // }
+  //   if(exampleFilter.length>0){  
+  //     console.log("EXAMPLE FILTER", exampleFilter)    
+  //     if(window.confirm(`${newName} is already in the list, do you want to update the old number?`)){
+  //     await notesPhonebook.putting(exampleFilter[0]._id, addPersons)
+  //     setStylesGreen(stylesNotification)
+  //     setBoolean(!boolean)
+  //     setNotificationAdd(`Contact: '${newName}' has been updated`)
+  //     timerBannerGreen()
+  //     setNewName(()=> ""); 
+  //     setNewNumber(()=> "")
+  //     exampleFilter = null
+  //     console.log("BOOLEAN<<<1", boolean)
+
+  //     } else {
+  //         setNewName(()=> ""); setNewNumber(()=> "")
+  //     }
+  //   // }else{
+       
+  //   }}
+  
+  const posting = () => {
+    if(exampleFilter.length<=0){
+      notesPhonebook.posting(addPersons)
+      .then(resolve => {
+          setPersons(()=> persons.concat(resolve))
+          setStylesGreen(stylesNotification)
+          setNotificationAdd(`New contact: '${newName}' has been added`)
+          timerBannerGreen()        
+      })
+    } else {
+      return
+    }      
+  }
+
+  const checkPost = async() => {
+    console.log("EXAMPLE FILTER", exampleFilter)
+    if(exampleFilter.length>0){
+      if(window.confirm(`${newName} is already in the list, do you want to update the old number?`)){
+      await notesPhonebook.putting(exampleFilter[0]._id, addPersons)
+      console.log("NOMBRE", exampleFilter[0].name)
+      setStylesGreen(stylesNotification)
+      setBoolean(!boolean)
+      setNotificationAdd(`Contact: '${newName}' has been updated`)
+      timerBannerGreen()
+      exampleFilter = null
+      console.log("BOOLEAN<<<1", boolean)
+      return
+      }
+  }
+}
+
+  const onSubmitForm = async (event) => {
+    event.preventDefault(); 
+    if(addPersons.name === "" || addPersons.number === ""){
+      setStylesRed(stylesError)
+      setNotificationError("Please add name and number before saving")
+      timerBannerRed()
+      setNotificationAdd("")
+    } else if(addPersons.name.length <= 3){
+      setStylesRed(stylesError)
+      setNotificationError("The name must have more than 3 letters")
+      timerBannerRed()
+    } else if(addPersons.name.length <= 3){
+      setStylesRed(stylesError)
+      setNotificationError("The name must have more than 3 letters")
+      timerBannerRed()
+    }
+    else {
+      checkPost()
+      posting()
+    }  
+    clearTextBox()
     }
 
   useEffect(() => {
@@ -115,8 +170,7 @@ export const PhonebookPost = () => {
      setPersons(filteredPersons) 
       setStylesRed(stylesError)
       setNotificationError(`${name} has been deleted from the database`)
-      setTimeout(()=> setNotificationError(""), 5000)
-      setTimeout(()=> setStylesRed({}), 5000)
+      timerBannerRed()
     }
       
   return (
@@ -127,8 +181,7 @@ export const PhonebookPost = () => {
       
       <FilteredList 
         persons={persons} 
-        filterNames={filterNames} 
-        onSubmitForm={onSubmitForm}
+        filterNames={filterNames}
         onChangeFilter={onChangeFilter}
         />
       

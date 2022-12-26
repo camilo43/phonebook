@@ -10,9 +10,10 @@ export const PersonForm = (props) => {
             <br></br>
             <br></br>
             Phone number: <input 
-              placeholder='04X - XXX - XXXX'
+              placeholder='04X-XXXXXX'
               value={props.newNumber}
               onChange={props.onChangeEventNumber}
+              maxLength="10"
             />
         </div>
         <div>

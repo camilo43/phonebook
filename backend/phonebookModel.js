@@ -14,7 +14,7 @@ const phonebookSchema = new mongoose.Schema({
         type: String,
         validate: {
             validator: function(v) {
-              return /\d{3}-\d{3}-\d{4}/.test(v);
+              return /\d{3}-\d{7}/.test(v);
             }},
         required:[true, 'Please enter the phone number'],
         

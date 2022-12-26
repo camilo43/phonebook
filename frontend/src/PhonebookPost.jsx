@@ -33,8 +33,10 @@ export const PhonebookPost = () => {
   }
   const [newNumber, setNewNumber] = useState("")
   const [ persons, setPersons ] = useState([]) 
-  const [ newName, setNewName ] = useState('')
+  const [ newName, setNewName ] = useState("")
   const [filterNames, setFilterNames] = useState("")
+  const [previewList, setPreviewList] = useState("-")
+  const [upperCaseNames, setUppercaseNames]= useState("")
 
   const [notificationError, setNotificationError] = useState("")
   const [ notificationAdd, setNotificationAdd] = useState("")
@@ -44,21 +46,30 @@ export const PhonebookPost = () => {
   const [emptyFields, setEmptyFields] = useState([])
   const [error, setError] = useState(null)
 
-  const onChangeEventName = (event) => {
-    setNewName(() => event.target.value)  
+  const onChangeEventName = (event) => {   
+    setNewName(() => {
+      return newName.length<1? event.target.value.toUpperCase() : event.target.value      
+    })
+    setUppercaseNames(()=> newName) 
   }
+
   const onChangeEventNumber = (event) => {
     setNewNumber(()=> event.target.value)
   }
+
   const onChangeFilter = (event) =>{
-    setFilterNames(()=> event.target.value)   
+    setFilterNames(()=> event.target.value)
+    setPreviewList(()=> event.target.value)
+    console.log("PREVIEWLIST", previewList)
   }
-  // const onSubmitFilter = (event) => {
-  //   event.preventDefault();
-  // }  
+  
+  const onSubmitFilter = (event) => {
+    event.preventDefault();     
+  }
+
   const addPersons = {
-    name: newName,
-    number: newNumber,
+    name: upperCaseNames,
+    number: formatPhoneNumber(newNumber),
 }
 
 const timerBannerRed = () => {  
@@ -74,6 +85,7 @@ const clearTextBox  = () => {
     setNewName(()=> ""); 
     setNewNumber(()=> "")
 }
+
 let exampleFilter = persons.filter(e=> e.name === newName)
 
   // let exampleFilter = persons.filter(e=> e.name === newName)  
@@ -102,39 +114,48 @@ let exampleFilter = persons.filter(e=> e.name === newName)
   //   // }else{
        
   //   }}
-  
+  function formatPhoneNumber(value) {
+    if (!value) return value;
+      const phoneNumber = value.replace(/[^\d]/g, '');
+      const phoneNumberLength = phoneNumber.length;
+    if (phoneNumberLength < 4) return phoneNumber;
+    if (phoneNumberLength < 7) {
+      console.log("TEST SLICING1", `${phoneNumber.slice(0, 3)} ${phoneNumber.slice(3)}`)
+      return `${phoneNumber.slice(0, 3)} ${phoneNumber.slice(3)}`;
+    }
+    console.log("TEST SLICING2", `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3, 10)}`)
+    return `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3, 10)}`;
+  }
+
   const posting = () => {
     if(exampleFilter.length<=0){
       notesPhonebook.posting(addPersons)
       .then(resolve => {
           setPersons(()=> persons.concat(resolve))
           setStylesGreen(stylesNotification)
-          setNotificationAdd(`New contact: '${newName}' has been added`)
+          setNotificationAdd(`New contact: '${upperCaseNames}' has been added`)
           timerBannerGreen()        
       })
     } else {
       return
-    }      
-  }
+    }
+  }    
 
   const checkPost = async() => {
-    console.log("EXAMPLE FILTER", exampleFilter)
     if(exampleFilter.length>0){
-      if(window.confirm(`${newName} is already in the list, do you want to update the old number?`)){
+      if(window.confirm(`${upperCaseNames} is already in the list, do you want to update the old number?`)){
       await notesPhonebook.putting(exampleFilter[0]._id, addPersons)
-      console.log("NOMBRE", exampleFilter[0].name)
       setStylesGreen(stylesNotification)
       setBoolean(!boolean)
-      setNotificationAdd(`Contact: '${newName}' has been updated`)
+      setNotificationAdd(`Contact: '${upperCaseNames}' has been updated`)
       timerBannerGreen()
       exampleFilter = null
-      console.log("BOOLEAN<<<1", boolean)
       return
       }
   }
 }
-
   const onSubmitForm = async (event) => {
+    const validation = /^(04)\d{8}/
     event.preventDefault(); 
     if(addPersons.name === "" || addPersons.number === ""){
       setStylesRed(stylesError)
@@ -145,10 +166,10 @@ let exampleFilter = persons.filter(e=> e.name === newName)
       setStylesRed(stylesError)
       setNotificationError("The name must have more than 3 letters")
       timerBannerRed()
-    } else if(addPersons.name.length <= 3){
-      setStylesRed(stylesError)
-      setNotificationError("The name must have more than 3 letters")
-      timerBannerRed()
+    // } else if(!addPersons.number.toString().match(validation)){
+    //   setStylesRed(stylesError)
+    //   setNotificationError("The number must start with 04")
+    //   timerBannerRed()
     }
     else {
       checkPost()
@@ -158,11 +179,24 @@ let exampleFilter = persons.filter(e=> e.name === newName)
     }
 
   useEffect(() => {
-    console.count()
     notesPhonebook.getting()
         .then(response=> {setPersons(response)})
         console.log("PERSONS", persons)
   }, [boolean])
+
+  useEffect(()=>{ 
+    if(newName.includes(" ")){
+      const secondIndex = newName.indexOf(" ")
+      console.log("nEW NAM", newName)
+      const secondUpper = newName.slice(secondIndex+1, secondIndex+2).toUpperCase()
+      const slicing = newName.slice(secondIndex+2)
+      console.log("SLICING", newName.slice(0, secondIndex), secondUpper + slicing)
+
+      setUppercaseNames(()=> newName.slice(0, secondIndex+1) + secondUpper + slicing)    
+    } else {
+      setUppercaseNames(()=> newName)
+    }
+  },[newName])
 
   const deleteContact = (id, name) =>{
      const filteredPersons = persons.filter(e=> e._id !== id)
@@ -183,6 +217,8 @@ let exampleFilter = persons.filter(e=> e.name === newName)
         persons={persons} 
         filterNames={filterNames}
         onChangeFilter={onChangeFilter}
+        onSubmitFilter={onSubmitFilter}
+        previewList={previewList}
         />
       
       <h2>Add contact</h2>

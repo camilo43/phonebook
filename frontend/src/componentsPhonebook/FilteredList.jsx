@@ -2,22 +2,33 @@
  export const FilteredList = (props) => { 
     let persons = props.persons
     let filteredNames = props.filterNames
+    let previewList = props.previewList
+    let onChangeFilter = props.onChangeFilter
 
-    let results = persons.filter((e)=> { return e.name === filteredNames})
+    let respuesta = persons.filter(e=> previewList==="" || previewList===" "? previewList="-" : (e.name).toLowerCase().includes(previewList.toLowerCase()))
     
     return <form onSubmit={props.onSubmitFilter}>
             <input
-              value={props.filterNames}
-              onChange={props.onSubmitForm}
+                placeholder="Search..."
+                value={filteredNames}
+                onChange={onChangeFilter}
             />
             <p>Results from your contact list:</p>
             <ul>
-                {results.map((e,i) => {
+                {respuesta.map((e,i) => {
+                    if(previewList==="" || previewList==="-"){
+                    return 
+                    } else {
+                        return <li key={i}>{e.name} - {e.number}</li>
+                    }       
+                    })
+                }    
+                {/* {results.map((e,i) => {
                     if(results){
                         return <li key={i}>{filteredNames} {e.number}</li>
                     }               
                     }) 
-                }            
+                }             */}
             </ul>
         </form>    
   }

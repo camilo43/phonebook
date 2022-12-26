@@ -7,11 +7,13 @@
   "scripts": {
     "start": "node backend/index_express.js",
     "dev": "nodemon  index_express.js",
-    "dev2": "nodemon backend/db.js"
+    "dev2": "nodemon backend/db.js",
+    "lint": "eslint ."
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "eslint": "^8.30.0",
     "nodemon": "^2.0.20"
   },
   "dependencies": {

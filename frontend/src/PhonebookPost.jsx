@@ -177,7 +177,6 @@ export const PhonebookPost = () => {
   return (
     <div style={mainStyle}>
       <h1>Phonebook</h1>
-      <h3>Changing .env Var</h3>
       <h2>Find contact</h2>
 
       <FilteredList

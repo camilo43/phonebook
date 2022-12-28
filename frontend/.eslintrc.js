@@ -18,9 +18,6 @@ module.exports = {
     'react'
   ],
   'rules': {
-    options: {
-      emitWarning: true
-    },
     'indent': [
       'error',
       2
